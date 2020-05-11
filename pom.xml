@@ -2,102 +2,179 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.kie</groupId>
-    <artifactId>kie-parent-with-dependencies</artifactId>
-    <version>6.5.0.csc-SNAPSHOT</version>
-    <!-- relativePath causes out-of-date problems on hudson slaves -->
-    <!--<relativePath>../droolsjbpm-build-bootstrap/pom.xml</relativePath>-->
-  </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-parent-with-dependencies</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <version>${revision}</version>
 
-  <groupId>org.drools</groupId>
-  <artifactId>drools</artifactId>
-  <packaging>pom</packaging>
+    <groupId>org.drools</groupId>
+    <artifactId>drools</artifactId>
+    <packaging>pom</packaging>
 
-  <name>Drools Multiproject</name>
-  <description>
-    Drools Expert is the rule engine and Drools Fusion does complex event processing (CEP).
-  </description>
+    <name>Drools Multiproject</name>
+    <description>
+        Drools Expert is the rule engine and Drools Fusion does complex event processing (CEP).
+    </description>
 
-  <properties>
-    <surefire.forkCount>1</surefire.forkCount>
-  </properties>
+    <properties>
+        <revision>6.5.0.csc${changelist}</revision>
+        <changelist>-SNAPSHOT</changelist>
+        <surefire.forkCount>1</surefire.forkCount>
+        <!-- Used by maven-enforcer-plugin -->
+        <!-- IMPORTANT: JDK8 is needed to build the projects (to support also WildFly 10), but we still do support JDK6/JDK7 for all backend modules. -->
+        <jdk.min.version>1.8</jdk.min.version>
+        <maven.min.version>3.6.0</maven.min.version>
+        <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
+    </properties>
 
-  <repositories>
-    <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
-    <repository>
-      <id>jboss-public-repository-group</id>
-      <name>JBoss Public Repository Group</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-      <layout>default</layout>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
+    <repositories>
+        <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
-  <scm>
-    <connection>scm:git:git@github.com:droolsjbpm/drools.git</connection>
-    <developerConnection>scm:git:git@github.com:droolsjbpm/drools.git</developerConnection>
-    <url>https://github.com/droolsjbpm/drools</url>
-  </scm>
+    <scm>
+        <connection>scm:git:git@github.com:scandihealth/drools.git</connection>
+        <developerConnection>scm:git:git@github.com:scandihealth/drools.git</developerConnection>
+        <url>https://github.com/scandihealth/drools</url>
+    </scm>
 
-  <modules>
-    <module>kie-test-util</module>
-    <module>drools-beliefs</module>
-    <module>drools-core</module>
-    <module>drools-reteoo</module>
-    <module>drools-compiler</module>
-    <module>drools-jsr94</module>
-    <module>drools-verifier</module>
-    <module>drools-persistence-jpa</module>
-    <module>drools-templates</module>
-    <module>drools-decisiontables</module>
-    <module>drools-examples</module>
-    <module>drools-pmml</module>
-    <module>drools-scorecards</module>
-    <module>kie-ci</module>
-    <module>kie-ci-osgi</module>
-    <module>drools-examples-api</module>
-    <module>drools-examples-cdi</module>
-    <module>drools-workbench-models</module>
-    <module>knowledge-api-legacy5-adapter</module>
-  </modules>
+    <modules>
+        <module>kie-test-util</module>
+        <module>drools-beliefs</module>
+        <module>drools-core</module>
+        <module>drools-reteoo</module>
+        <module>drools-compiler</module>
+        <module>drools-jsr94</module>
+        <module>drools-verifier</module>
+        <module>drools-persistence-jpa</module>
+        <module>drools-templates</module>
+        <module>drools-decisiontables</module>
+        <module>drools-examples</module>
+        <module>drools-pmml</module>
+        <module>drools-scorecards</module>
+        <module>kie-ci</module>
+        <module>kie-ci-osgi</module>
+        <module>drools-examples-api</module>
+        <module>drools-examples-cdi</module>
+        <module>drools-workbench-models</module>
+        <module>knowledge-api-legacy5-adapter</module>
+    </modules>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <forkCount>${surefire.forkCount}</forkCount>
-            <reuseForks>true</reuseForks>
-            <runOrder>hourly</runOrder>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven.enforcer.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-plugin-versions</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requirePluginVersions>
+                                        <unCheckedPluginList>org.kie:kie-maven-plugin</unCheckedPluginList>
+                                    </requirePluginVersions>
+                                </rules>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>enforce-direct-dependencies</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <illegalTransitiveDependencyCheck
+                                            implementation="de.is24.maven.enforcer.rules.IllegalTransitiveDependencyCheck">
+                                        <regexIgnoredClasses combine.children="append">
+                                            <!-- The marshalling classes are generated by Errai during GWT compilation. These classes
+                                                 usually contain references to other dependencies which are not part of the project
+                                                 (transitive dependencies), which then results in the dependency check failure.
+                                                 From the maintenance point of view, ignoring these generated classes seems like the
+                                                 best option. -->
+                                            <regexIgnoredClass>
+                                                org\.jboss\.errai\.marshalling\.server\.impl\.ServerMarshallingFactory.*
+                                            </regexIgnoredClass>
+                                        </regexIgnoredClasses>
+                                    </illegalTransitiveDependencyCheck>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <forkCount>${surefire.forkCount}</forkCount>
+                        <reuseForks>true</reuseForks>
+                        <runOrder>hourly</runOrder>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <configuration>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-  <profiles>
-    <profile>
-      <id>fullProfile</id>
-      <activation>
-        <property>
-          <name>full</name>
-        </property>
-      </activation>
-      <modules>
-        <module>drools-distribution</module>
-      </modules>
-    </profile>
-  </profiles>
+    <profiles>
+        <profile>
+            <id>fullProfile</id>
+            <activation>
+                <property>
+                    <name>full</name>
+                </property>
+            </activation>
+            <modules>
+                <module>drools-distribution</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>

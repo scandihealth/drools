@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.drools</groupId>
     <artifactId>drools</artifactId>
-    <version>6.5.0.csc-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>drools-scorecards</artifactId>
